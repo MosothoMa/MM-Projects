@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Core.Entities;
 using Core.Interfaces;
+using Core.specifications;
 using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Data
@@ -26,5 +27,26 @@ namespace Infrastructure.Data
         {
              return await _cotext.Set<T>().ToListAsync();
         }
+
+
+        public async Task<T> GetentitywithSpec(Ispecification<T> spec)
+        {
+            return await applySPecification(spec).FirstOrDefaultAsync();
+        }
+        public async Task<IReadOnlyList<T>> ListAsync(Ispecification<T> spec)
+        { 
+            return await applySPecification(spec).ToListAsync();
+        }
+
+        public async Task<int> CountAsync(Ispecification<T> spec)
+        {
+            return await applySPecification(spec).CountAsync();
+        }
+
+        private IQueryable<T> applySPecification(Ispecification<T> spec)
+        {
+            return SpecificationEvaluator<T>.GetQuery(_cotext.Set<T>().AsQueryable(),spec);
+        }
+
     }
 }

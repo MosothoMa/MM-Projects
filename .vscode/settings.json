@@ -1,3 +1,19 @@
 {
-    "omnisharp.projectLoadTimeout": 600000
+    "omnisharp.projectLoadTimeout": 600000,
+    "terminal.integrated.defaultProfile.windows": "Command Prompt",
+    "terminal.integrated.profiles.windows": {
+      "PowerShell": {
+        "source": "PowerShell",
+        "icon": "terminal-powershell",
+        "path": ["C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe"]
+      },
+      "Command Prompt": {
+        "path": [
+          "${env:windir}\\Sysnative\\cmd.exe",
+          "${env:windir}\\System32\\cmd.exe"
+        ],
+        "args": [],
+        "icon": "terminal-cmd"
+      }
+    }
 }

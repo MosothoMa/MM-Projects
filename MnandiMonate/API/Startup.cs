@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using API.Helper;
 // using API.Data;
 using Core.Interfaces;
 using Infrastructure.Data;
@@ -34,6 +35,14 @@ namespace API
             services.AddScoped<IProductRepository, ProductRepository>();
             services.AddScoped(typeof(IGenericRepository<>),(typeof(GenericRepository<>)));
             services.AddControllers();
+            services.AddAutoMapper(typeof(MappingProfiles));
+            services.AddCors(options =>
+            {
+                options.AddPolicy("CorsPolicy",builder => 
+                {
+                    builder.AllowAnyMethod().AllowAnyHeader().WithOrigins("https://localhost:4200");
+                });
+            });
             services.AddDbContext<StoreContext>(x => x.UseSqlite(_config.GetConnectionString("DefaultConnection")));
             services.AddSwaggerGen(c =>
             {
@@ -51,9 +60,15 @@ namespace API
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "WebAPIv5 v1"));
             }
 
-            app.UseHttpsRedirection();
+          
 
+            app.UseHttpsRedirection();
+            
+           
             app.UseRouting();
+              
+            app.UseStaticFiles();
+            app.UseCors("CorsPolicy");
 
             app.UseAuthorization();
 
@@ -62,5 +77,6 @@ namespace API
                 endpoints.MapControllers();
             });
         }
+// "proxyConfig": ""
     }
 }
