@@ -28,11 +28,11 @@ namespace Infrastructure.Data
              return await _cotext.Set<T>().ToListAsync();
         }
 
-
         public async Task<T> GetentitywithSpec(Ispecification<T> spec)
         {
             return await applySPecification(spec).FirstOrDefaultAsync();
         }
+       
         public async Task<IReadOnlyList<T>> ListAsync(Ispecification<T> spec)
         { 
             return await applySPecification(spec).ToListAsync();
